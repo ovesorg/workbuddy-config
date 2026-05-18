@@ -3,14 +3,34 @@
 Centralized WorkBuddy configuration package for team use — connector MCP templates, shared skills, and bootstrap tooling.
 
 > **MCP entry point:** `docs/agent/manifest.yaml` / `docs/agent/start-here.md`
+> **分类索引:** `docs/categories/CATEGORIES.md`
 > Full documentation surface: `docs/`
+
+## 6 大目标分类
+
+| 分类 | 连接器 | 状态 |
+|---|---|---|
+| **MS Teams (Azure)** | `ms-teams` | 🆕 新增 |
+| **Odoo** | `odoo` | 🆕 新增 |
+| **CloudFlare** | `cloudflare`, `edgeone-pages` | 🆕+已有 |
+| **Social Platforms** | `wecom`, `dingtalk`, `feishu`, `gongfeng-woa`, `tmeet` | 已有 |
+| **OneDrive** | `onedrive` | 🆕 新增 |
+| **Documentation Sites** | `notion`, `tencent-docs`, `kdocs`, `lexiang`, `iwiki-woa`, `tapd`, `baidu-netdisk` | 已有 |
+
+完整分类文档：`docs/categories/CATEGORIES.md`
 
 ## What Is In This Repo
 
 ```
 workbuddy-config/
-├── docs/                    # Docs surface (agent manifest, reference, ADR)
-├── connectors/              # 27 connector MCP templates (no credentials)
+├── docs/                    # Docs surface (agent manifest, reference, ADR, categories)
+│   └── categories/          # 6 大目标分类文档
+├── connectors/              # 31 connector MCP templates (no credentials)
+│   ├── ms-teams/           # 🆕 Microsoft Teams / Azure AD
+│   ├── odoo/               # 🆕 Odoo ERP
+│   ├── cloudflare/         # 🆕 Cloudflare Workers/R2/D1
+│   ├── onedrive/           # 🆕 Microsoft OneDrive
+│   └── ...                 # 27 existing connectors
 ├── skills/                  # 6 shared user skills
 ├── scripts/                 # Bootstrap tooling
 └── mcp.json                 # Root MCP reference (local override, not live config)

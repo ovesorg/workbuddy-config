@@ -46,6 +46,14 @@ nav:
 - ADR:
   - Index: adr/index.md
   - ADR-001: adr/001-credential-free-connectors.md
+- Target Categories:
+  - 分类概览: categories/CATEGORIES.md
+  - MS Teams (Azure): categories/ms-teams.md
+  - Odoo: categories/odoo.md
+  - CloudFlare: categories/cloudflare.md
+  - Social Platforms: categories/social-platforms.md
+  - OneDrive: categories/onedrive.md
+  - Documentation Sites: categories/documentation-sites.md
 - Reference:
   - Connector Reference: reference/connector-reference.md
   - Skill Reference: reference/skill-reference.md
@@ -70,7 +78,7 @@ extra:
   generator: false
   oves_doc_version: 1.0.0
   oves_last_editor: Your Name
-  oves_revision_summary: Template-normalized doc site
+  oves_revision_summary: Template-normalized doc site with 6 target categories
   oves_revision_date: '2026-05-18'
   oves_hub_integration:
     enabled: true

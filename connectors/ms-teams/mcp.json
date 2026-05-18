@@ -1,0 +1,14 @@
+{
+    "mcpServers": {
+        "ms-teams": {
+            "timeout": 600,
+            "command": "npx",
+            "args": ["-y", "@microsoft/mcp@latest"],
+            "env": {
+                "AZURE_CLIENT_ID": "${AZURE_CLIENT_ID}",
+                "AZURE_CLIENT_SECRET": "${AZURE_CLIENT_SECRET}",
+                "AZURE_TENANT_ID": "${AZURE_TENANT_ID}"
+            }
+        }
+    }
+}

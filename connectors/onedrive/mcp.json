@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "onedrive": {
+            "timeout": 600,
+            "command": "npx",
+            "args": ["-y", "@microsoft/mcp@latest"],
+            "env": {
+                "MSGRAPH_CLIENT_ID": "${MSGRAPH_CLIENT_ID}",
+                "MSGRAPH_CLIENT_SECRET": "${MSGRAPH_CLIENT_SECRET}",
+                "MSGRAPH_TENANT_ID": "${MSGRAPH_TENANT_ID}",
+                "ONEDRIVE_USER_EMAIL": "${ONEDRIVE_USER_EMAIL}"
+            }
+        }
+    }
+}
