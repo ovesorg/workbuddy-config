@@ -1,12 +1,14 @@
 {
-  "template_package": "workbuddy-config",
-  "template_version": "1.0.0",
+  "template_package": "mkdocs-oves-template",
+  "template_version": "0.1.3",
   "repo_name": "workbuddy-config",
   "marker_version": 1,
   "last_template_sync": "2026-05-18",
   "site_name": "workbuddy-config",
   "template_state": "normalized",
-  "quality_marker": "config-template-managed",
+  "quality_marker": "template-managed",
+  "global_search_bridge_version": 1,
+  "hub_integration_enabled": true,
   "repo_independent_build": true,
-  "language_mode": "root-english"
+  "language_mode": "root-english-only"
 }

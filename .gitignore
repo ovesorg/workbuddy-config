@@ -16,6 +16,7 @@ site/
 
 # MkDocs date cache (build artifact)
 docs/.dates_cache.jsonl
+docs/.gitattributes
 
 # OS junk
 .DS_Store
@@ -28,6 +29,11 @@ workbuddy.db-wal
 *.lockfile
 user-state.json
 workspace-state.json
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
 
 # App internals
 app/

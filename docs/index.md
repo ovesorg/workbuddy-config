@@ -17,3 +17,8 @@
 ---
 
 *ADR and Reference surfaces are indexed for MCP-based repo orientation.*
+
+<!-- mkdocs-oves-template:reference-footnote:start -->
+---
+Small notes: progressive architecture decisions are tracked in [Architecture Decision Records](adr/index.md); stable lookup material lives under [Reference](reference/index.md).
+<!-- mkdocs-oves-template:reference-footnote:end -->
