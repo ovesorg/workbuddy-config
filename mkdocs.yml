@@ -1,9 +1,9 @@
 site_name: WorkBuddy Shared Config
 site_description: Centralized WorkBuddy configuration package — connector MCP templates,
   shared skills, and bootstrap tooling.
-site_url: http://127.0.0.1:8000/
-repo_name: YOUR_TEAM/workbuddy-config
-repo_url: https://github.com/YOUR_TEAM/workbuddy-config
+site_url: https://huashan_wang.github.io/workbuddy-config/
+repo_name: Huashan_Wang/workbuddy-config
+repo_url: https://github.com/Huashan_Wang/workbuddy-config
 theme:
   name: material
   palette:
@@ -77,7 +77,7 @@ markdown_extensions:
 extra:
   generator: false
   oves_doc_version: 1.0.0
-  oves_last_editor: Your Name
+  oves_last_editor: Huashan Wang
   oves_revision_summary: Template-normalized doc site with 6 target categories
   oves_revision_date: '2026-05-18'
   oves_hub_integration:
