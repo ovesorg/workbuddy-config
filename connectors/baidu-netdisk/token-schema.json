@@ -1,0 +1,16 @@
+{
+    "title": "百度网盘授权",
+    "description": "需要百度网盘开放平台的 Access Token（有效期 30 天，过期后需重新获取）",
+    "docUrl": "https://pan.baidu.com/union/doc/Wm9sl0i0j",
+    "docLabel": "查看百度网盘 MCP 接入文档",
+    "fields": [
+        {
+            "key": "BAIDU_NETDISK_ACCESS_TOKEN",
+            "label": "Access Token",
+            "type": "password",
+            "required": true,
+            "placeholder": "百度网盘开放平台获取的 Access Token",
+            "description": "从百度网盘开放平台获取，有效期 30 天，过期后需重新获取"
+        }
+    ]
+}

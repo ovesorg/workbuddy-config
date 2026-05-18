@@ -1,0 +1,24 @@
+{
+    "title": "邮箱授权",
+    "description": "输入邮箱地址和 IMAP/SMTP 授权码（非登录密码）。支持 163、126、yeah.net 等网易邮箱，以及其他支持 IMAP/SMTP 的邮箱。",
+    "docUrl": "https://help.mail.163.com/faqDetail.do?code=d7a5dc8471cd0c0e8b4b8f4f8e49998b374173cfe9171305fa1ce630d7f67ac286624f309a1a7089",
+    "docLabel": "如何开启 IMAP/SMTP 并获取授权码",
+    "fields": [
+        {
+            "key": "NETEASE_EMAIL_USER",
+            "label": "邮箱地址",
+            "type": "text",
+            "required": true,
+            "placeholder": "yourname@163.com",
+            "description": "完整邮箱地址，如 xxx@163.com、xxx@126.com、xxx@yeah.net"
+        },
+        {
+            "key": "NETEASE_EMAIL_PASS",
+            "label": "IMAP/SMTP 授权码",
+            "type": "password",
+            "required": true,
+            "placeholder": "在邮箱设置中生成的授权码",
+            "description": "在邮箱网页端「设置 → POP3/SMTP/IMAP」页面开启服务后生成的客户端授权码，不是登录密码"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "fbs-connector": {
+      "type": "streamableHttp",
+      "url": "https://api2.u3w.com/fbs-mcp/mcp",
+      "timeout": 30000
+    }
+  }
+}

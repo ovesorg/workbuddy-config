@@ -1,0 +1,23 @@
+{
+  "name": "福帮手",
+  "description": "Fbsir connector for activation, entitlements, points, lebao, identity, scene packs, and Family IP Partner workflows.",
+  "description_zh": "福帮手生态连接器：访问码激活、权益预检、积分、乐包兑换/状态、身份、场景包查询，并支持福帮手·家族IP合伙人无注册乐包闭环。",
+  "description_en": "Fbsir connector for activation, entitlements, points, lebao vouchers, identity and scene packs.",
+  "source": "fbs-connector",
+  "icon": "icon.png",
+  "examples_zh": [
+    "帮我用访问码 FBS-XXXX-XXXX-XXXX 激活 iplib-core",
+    "查看我当前的积分余额和权益列表",
+    "先确认我当前是领取、激活还是继续，再处理待归并乐包",
+    "查询我的乐包兑换状态和已解锁权益",
+    "按 skill_whoami 返回的 packCode 查询场景包内容快照"
+  ],
+  "examples_en": [
+    "Activate access code FBS-XXXX-XXXX-XXXX for iplib-core",
+    "Check my current points balance and entitlements",
+    "Check whether I should claim, activate, or continue before handling a pending lebao",
+    "Check my lebao redemption status and unlocked entitlements",
+    "Query a scene-pack snapshot with the packCode returned by skill_whoami"
+  ],
+  "version": "1.2.8.1"
+}

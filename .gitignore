@@ -1,0 +1,31 @@
+# Credentials — never commit real tokens/keys/passwords
+*.template
+*credentials*.json
+*secrets*.json
+*_config.json
+*_secret*
+*.key
+.env
+
+# Local overrides (team members fill in their own)
+mcp.local.json
+connectors/*/mcp.local.json
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# WorkBuddy local state (never share)
+workbuddy.db
+workbuddy.db-shm
+workbuddy.db-wal
+*.lockfile
+user-state.json
+workspace-state.json
+
+# App internals
+app/
+traces/
+BINARIES/
+binaries/
+session/
