@@ -1,0 +1,72 @@
+site_name: WorkBuddy Shared Config
+site_description: Centralized WorkBuddy configuration package — connector MCP templates, shared skills, and bootstrap tooling.
+site_url: http://127.0.0.1:8000/
+repo_name: YOUR_TEAM/workbuddy-config
+repo_url: https://github.com/YOUR_TEAM/workbuddy-config
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  logo: assets/logo.svg
+  favicon: assets/favicon.png
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Agent Orientation:
+      - Agent Start Here: agent/start-here.md
+  - Context:
+      - Capabilities: context/capabilities.md
+      - Workflows: context/workflows.md
+      - Contracts: context/contracts.md
+  - Reference:
+      - Connector Reference: reference/connector-reference.md
+      - Skill Reference: reference/skill-reference.md
+  - ADR:
+      - Index: adr/index.md
+      - ADR-001: adr/001-credential-free-connectors.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.mark
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+extra:
+  generator: false
+
+plugins:
+  - search:
+      lang:
+        - en
