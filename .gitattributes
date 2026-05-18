@@ -1,0 +1,19 @@
+# Auto-detect text files and normalize line endings
+* text=auto
+
+# Scripts
+*.sh text eol=lf
+*.ps1 text eol=crlf
+
+# Docs
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+
+# Binaries — do not modify
+*.png binary
+*.jpg binary
+*.svg binary
+*.whl binary
+*.jar binary

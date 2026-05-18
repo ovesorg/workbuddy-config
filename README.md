@@ -1,88 +1,73 @@
 # WorkBuddy Shared Config
 
-Centralized WorkBuddy configuration for team use. Includes connector MCP configs, shared skills, and bootstrap scripts.
+Centralized WorkBuddy configuration package for team use — connector MCP templates, shared skills, and bootstrap tooling.
 
-## What's Here
+> **MCP entry point:** `docs/agent/manifest.yaml` / `docs/agent/start-here.md`
+> Full documentation surface: `docs/`
+
+## What Is In This Repo
 
 ```
 workbuddy-config/
-├── README.md
-├── .gitignore
-├── mcp.json                     ← Root MCP reference config
-├── connectors/                  ← Connector MCP templates (see below)
-│   ├── baidu-netdisk/
-│   ├── dingtalk/
-│   ├── edgeone-pages/
-│   ├── fbs-connector/
-│   ├── feishu/
-│   ├── github/
-│   ├── github-remote/
-│   ├── gmail/
-│   ├── gongfeng-woa/
-│   ├── iwiki-woa/
-│   ├── jira/
-│   ├── kdocs/
-│   ├── lexiang/
-│   ├── notion/
-│   ├── qcc-company/
-│   ├── qq-mail/
-│   ├── supabase/
-│   ├── tapd/
-│   ├── tapd-woa/
-│   ├── tencent-docs/
-│   ├── tencent-survey/
-│   ├── tencent-weiyun/
-│   └── zhiyan-cicd/
-├── skills/                      ← User-installed skills
-│   ├── automation-workflows/
-│   ├── chatgpt/
-│   ├── codex-cli-migration/
-│   ├── github/
-│   ├── openclaw-odoo/
-│   └── web3-graphql/
-└── scripts/
-    ├── bootstrap.sh             ← Linux/macOS/Git Bash bootstrap
-    └── bootstrap.ps1            ← Windows PowerShell bootstrap
+├── docs/                    # Docs surface (agent manifest, reference, ADR)
+├── connectors/              # 27 connector MCP templates (no credentials)
+├── skills/                  # 6 shared user skills
+├── scripts/                 # Bootstrap tooling
+└── mcp.json                 # Root MCP reference (local override, not live config)
 ```
 
-## Quick Setup (Teammate Onboarding)
+## For Teammates — Quick Setup
 
-### Windows (PowerShell)
+Clone and bootstrap:
+
+```bash
+git clone https://github.com/YOUR_TEAM/workbuddy-config.git
+cd workbuddy-config
+# Windows
+.\scripts\bootstrap.ps1
+# Linux / macOS / Git Bash
+bash scripts/bootstrap.sh
+```
+
+Or pipe directly:
+
 ```powershell
+# Windows
 irm https://raw.githubusercontent.com/YOUR_TEAM/workbuddy-config/main/scripts/bootstrap.ps1 | iex
 ```
 
-### Linux / macOS / Git Bash
 ```bash
+# Linux / macOS / Git Bash
 curl -fsSL https://raw.githubusercontent.com/YOUR_TEAM/workbuddy-config/main/scripts/bootstrap.sh | bash
 ```
 
-## Connectors
+Restart WorkBuddy after bootstrap.
 
-Connector configs in `connectors/` are **safe to share** — they use environment variable placeholders (e.g. `${JIRA_API_TOKEN}`) for credentials. Each connector's own docs explain how to obtain credentials.
+## Connectors Needing Credentials
 
-### Connectors Needing Credentials
+Three connectors require env vars. Documented in full at `docs/reference/connector-reference.md`:
 
-| Connector | Env Var(s) Required |
+| Connector | Env Vars |
 |---|---|
-| `baidu-netdisk` | `BAIDU_NETDISK_ACCESS_TOKEN` |
-| `gmail` | `EMAIL_USER`, `EMAIL_PASSWORD` |
-| `jira` | `JIRA_BASE_URL`, `JIRA_USERNAME`, `JIRA_API_TOKEN` |
+| baidu-netdisk | `BAIDU_NETDISK_ACCESS_TOKEN` |
+| gmail | `EMAIL_USER`, `EMAIL_PASSWORD` |
+| jira | `JIRA_BASE_URL`, `JIRA_USERNAME`, `JIRA_API_TOKEN` |
 
-For these, either set the env vars in your shell before running, or copy the mcp.json to your local `~/.workbuddy/.mcp.json` and replace placeholders.
+All other connectors are template-only and work after bootstrap with no extra config.
 
-## Skills
+## Security Rule
 
-User-installed skills live in `skills/`. These are copied from `~/.workbuddy/skills/`.
+Credentials are never committed here. See `docs/context/contracts.md` for the full list of what is excluded from version control.
 
-To install a skill into your local WorkBuddy:
-1. Copy the skill folder into your `~/.workbuddy/skills/`
-2. Restart WorkBuddy or reload the skills panel
+## Docs Surface
 
-## MCP Config
+| Doc | Purpose |
+|---|---|
+| `docs/agent/start-here.md` | MCP agent orientation |
+| `docs/context/capabilities.md` | What this repo provides |
+| `docs/context/workflows.md` | Onboarding, adding connectors/skills |
+| `docs/context/contracts.md` | What goes in / never goes in this repo |
+| `docs/reference/` | Connector env vars, skill reference |
+| `docs/adr/` | Architecture decisions |
 
-The root `mcp.json` is a **reference only** — your local `~/.workbuddy/.mcp.json` may differ as it reflects your active connector proxy. Use it as a template when setting up new connectors.
-
-## License
-
-Internal use only.
+## Internal use only.

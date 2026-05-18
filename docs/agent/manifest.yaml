@@ -1,0 +1,60 @@
+schema_version: "1.0"
+kind: "repo_manifest"
+
+repo_id: "workbuddy-config"
+repo_class: "shared-tooling"
+lifecycle: "active"
+owner: "workbuddy-platform-team"
+framework_repo: "workbuddy-config"
+
+authority_order:
+  - repo_owner_rules
+  - template_standard
+  - contract_spec
+  - operational_guidance
+  - historical_experience
+
+entrypoints:
+  - "docs/agent/start-here.md"
+  - "docs/context/capabilities.md"
+  - "docs/context/workflows.md"
+  - "docs/context/contracts.md"
+  - "README.md"
+
+resource_roots:
+  connectors: "connectors"
+  skills: "skills"
+  bootstrap: "scripts"
+  specs: "docs/context"
+  governance: "docs"
+  experience: "docs"
+
+components:
+  - id: "connector-configs"
+    labels:
+      - "workbuddy"
+      - "connectors"
+      - "mcp"
+    paths:
+      configs: "connectors"
+      specs: "docs/context"
+      reference: "docs/reference"
+  - id: "shared-skills"
+    labels:
+      - "workbuddy"
+      - "skills"
+    paths:
+      skills: "skills"
+      specs: "docs/context"
+  - id: "bootstrap-tooling"
+    labels:
+      - "workbuddy"
+      - "bootstrap"
+      - "onboarding"
+    paths:
+      scripts: "scripts"
+
+notes:
+  - "This repo defines the shared WorkBuddy configuration package for team use."
+  - "Contains connector MCP templates (no credentials), shared skills, and bootstrap scripts."
+  - "When connector behavior conflicts with team conventions, this repo governs the shared contract."
