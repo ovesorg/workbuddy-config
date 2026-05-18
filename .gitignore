@@ -11,6 +11,12 @@
 mcp.local.json
 connectors/*/mcp.local.json
 
+# MkDocs build output
+site/
+
+# MkDocs date cache (build artifact)
+docs/.dates_cache.jsonl
+
 # OS junk
 .DS_Store
 Thumbs.db
