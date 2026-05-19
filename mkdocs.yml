@@ -26,8 +26,6 @@ theme:
   features:
   - navigation.instant
   - navigation.tracking
-  - navigation.tabs
-  - navigation.sections
   - toc.integrate
   - search.suggest
   - search.highlight
@@ -39,6 +37,7 @@ nav:
 - Home: index.md
 - Agent Orientation:
   - Agent Start Here: agent/start-here.md
+  - WorkBuddy Setup (Agent): agent/workbuddy-setup.md
 - Context:
   - Capabilities: context/capabilities.md
   - Workflows: context/workflows.md

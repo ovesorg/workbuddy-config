@@ -1,0 +1,12 @@
+{
+    "mcpServers": {
+        "workspace-mcp": {
+            "type": "stdio",
+            "command": "node",
+            "args": ["D:\\github\\workspace-mcp\\server\\src\\server.js"],
+            "env": {
+                "WORKSPACE_ROOT": "D:\\github"
+            }
+        }
+    }
+}

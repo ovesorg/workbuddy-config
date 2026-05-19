@@ -16,6 +16,7 @@ authority_order:
 
 entrypoints:
   - "docs/agent/start-here.md"
+  - "docs/agent/workbuddy-setup.md"
   - "docs/context/capabilities.md"
   - "docs/context/workflows.md"
   - "docs/context/contracts.md"
@@ -53,6 +54,13 @@ components:
       - "onboarding"
     paths:
       scripts: "scripts"
+  - id: "agent-entrypoints"
+    labels:
+      - "workbuddy"
+      - "agent"
+      - "setup"
+    paths:
+      agent-docs: "docs/agent"
 
 notes:
   - "This repo defines the shared WorkBuddy configuration package for team use."
