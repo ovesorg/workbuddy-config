@@ -162,7 +162,7 @@ EMAIL_PASSWORD=            # Google Account → Security → App Passwords（不
 
 ```powershell
 # 1. 克隆 workbuddy-config 到本地
-git clone https://github.com/Huashan_Wang/workbuddy-config.git D:\github\workbuddy-config
+git clone https://github.com/ovesorg/workbuddy-config.git D:\github\workbuddy-config
 
 # 2. 运行 bootstrap（管理员 PowerShell）
 .\scripts\bootstrap.ps1

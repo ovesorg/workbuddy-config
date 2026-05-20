@@ -1,9 +1,9 @@
 site_name: WorkBuddy Shared Config
 site_description: Centralized WorkBuddy configuration package — connector MCP templates,
   shared skills, and bootstrap tooling.
-site_url: https://huashan_wang.github.io/workbuddy-config/
-repo_name: Huashan_Wang/workbuddy-config
-repo_url: https://github.com/Huashan_Wang/workbuddy-config
+site_url: https://ovesorg.github.io/workbuddy-config/
+repo_name: ovesorg/workbuddy-config
+repo_url: https://github.com/ovesorg/workbuddy-config
 theme:
   name: material
   palette:
@@ -50,7 +50,8 @@ nav:
   - MS Teams (Azure): categories/ms-teams.md
   - Odoo: categories/odoo.md
   - CloudFlare: categories/cloudflare.md
-  - Social Platforms: categories/social-platforms.md
+  - Enterprise Communication: categories/enterprise-communication.md
+  - Social Media Marketing: categories/social-platforms.md
   - OneDrive: categories/onedrive.md
   - Documentation Sites: categories/documentation-sites.md
 - Reference:
