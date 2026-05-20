@@ -5,9 +5,9 @@
             "command": "npx",
             "args": ["-y", "@microsoft/mcp@latest"],
             "env": {
-                "AZURE_CLIENT_ID": "${AZURE_CLIENT_ID}",
-                "AZURE_CLIENT_SECRET": "${AZURE_CLIENT_SECRET}",
-                "AZURE_TENANT_ID": "${AZURE_TENANT_ID}"
+                "AZURE_CLIENT_ID": "e447e870-15f4-4fb2-8689-207b9ed8dddb",
+                "AZURE_CLIENT_SECRET": "Set locally via environment variable",
+                "AZURE_TENANT_ID": "883916b0-e831-4935-9836-7ee891edaf7c"
             }
         }
     }
