@@ -15,8 +15,8 @@ description: 社媒营销平台连接器与内容运营指南
 
 | 平台 | 类型 | 受众 | 主要用途 |
 |---|---|---|---|
-| [Douyin 抖音](#douyin-抖音) | MCP / 手动 | 国内外消费者、供应商、投资者 | 品牌内容、供应链可视化 |
-| `facebook` | MCP | 海外 B2B / B2C | 待接入 |
+| [Douyin 抖音](#douyin-抖音) | 手动 | 国内外消费者、供应商、投资者 | 品牌内容、供应链可视化 |
+| [Facebook](connectors/facebook/) | MCP | 海外 B2B / B2C | Page 发帖、评论管理 |
 | `instagram` | MCP | 海外 B2C | 待接入 |
 | `linkedin` | MCP | 海外 B2B 决策者、投资者 | 待接入 |
 | `x-twitter` | MCP | 海外行业舆论 | 待接入 |
@@ -25,8 +25,8 @@ description: 社媒营销平台连接器与内容运营指南
 
 ```
 connectors/
-├── douyin/           ← 抖音企业号
-├── facebook/         ← Facebook（待接入）
+├── douyin/           ← 抖音企业号（无 MCP，手动运营）
+├── facebook/          ← Facebook Page（MCP 已接入）
 ├── instagram/        ← Instagram（待接入）
 ├── linkedin/         ← LinkedIn（待接入）
 └── x-twitter/       ← X / Twitter（待接入）
@@ -78,6 +78,40 @@ connectors/
          → 使用热点 BGM + 热点标签
          → 发布后 30 分钟内回复评论
 ```
+
+## Facebook
+
+已接入 MCP Server（`facebook-mcp-server`，已安装）。
+
+### 快速导航
+
+| 资源 | 链接 |
+|---|---|
+| 连接器配置 | [connectors/facebook/](connectors/facebook/) |
+| Facebook Developers | https://developers.facebook.com |
+| Graph API 文档 | https://developers.facebook.com/docs/graph-api |
+
+### 可用工具
+
+| 工具 | 说明 |
+|---|---|
+| `facebook_post_create` | 发布新帖 |
+| `facebook_post_list` | 列出近期帖子 |
+| `facebook_post_delete` | 删除帖子 |
+| `facebook_comment_list` | 列出帖子评论 |
+| `facebook_comment_reply` | 回复评论 |
+| `facebook_page_info` | 获取 Page 信息 |
+
+### MCP 配置
+
+参考 `connectors/facebook/mcp.json`，需要设置：
+
+| 环境变量 | 说明 |
+|---|---|
+| `FACEBOOK_ACCESS_TOKEN` | Page Access Token（需 `pages_manage_posts` 权限） |
+| `FACEBOOK_PAGE_ID` | Facebook Page ID |
+
+> 多 Page 场景：在 `mcp.json` 中创建多个 entry（`facebook-tz`, `facebook-ke` 等），各自使用不同的环境变量。
 
 ## 待接入平台
 
