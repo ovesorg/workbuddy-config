@@ -1,27 +1,70 @@
 ---
 name: plantuml-diagram
-description: Generate PlantUML diagrams following OVES conventions. Use when the user asks for UML diagrams, architecture diagrams, sequence diagrams, class diagrams, or any PlantUML-based visualization of system structure.
+description: Generate PlantUML diagrams following OVES conventions. Covers all model-driven diagram types (ArchiMate, Sequence, Deployment, Class, Activity, State, C4, Gantt). Use when the user asks for diagrams — distinct from data-driven charts (Recharts).
 triggers:
+  - "diagram"
   - "plantuml"
-  - "uml diagram"
-  - "architecture diagram"
+  - "uml"
   - "archimate"
+  - "architecture diagram"
   - "component diagram"
   - "sequence diagram"
   - "class diagram"
   - "deployment diagram"
+  - "state diagram"
+  - "activity diagram"
   - "C4 diagram"
-  - "draw this as plantuml"
-  - "generate plantuml"
+  - "gantt chart"
+  - "draw a diagram"
   - "create a diagram"
   - "用PlantUML画"
   - "架构图"
+  - "流程图"
 ---
 
-# PlantUML Diagram
+# OVES Diagram Skill
 
-Generate PlantUML diagrams following OVES conventions established in
-`D:/github/dirac-framework/docs/diagrams/`.
+## Terminology: Diagram vs Chart
+
+OVES uses distinct terms for two fundamentally different expression types:
+
+| Term | Domain | Tool | Source of Truth |
+|------|--------|------|-----------------|
+| **Diagram** | Logic, structure, relationships, behavior | PlantUML | `.puml` file |
+| **Chart** | Data, quantities, comparisons, distributions | Recharts | JSON/CSV + block props |
+
+### The Dependency Test (Decision Rule)
+
+> Remove all relationships from the representation.
+> If essential meaning is lost → **Diagram** (PlantUML).
+> If data remains independently valid → **Chart** (Recharts).
+
+### Audit: All Types Mapped
+
+#### Diagram Types (PlantUML — model-driven)
+
+| Type | Without relationships | Verdict |
+|------|---------------------|---------|
+| ArchiMate | Unconnected boxes, no topology | ✅ Diagram |
+| Sequence | Participants, no interaction | ✅ Diagram |
+| Deployment | Nodes, no infrastructure topology | ✅ Diagram |
+| Class | Classes, no inheritance/association | ✅ Diagram |
+| Activity | Disconnected steps, no process | ✅ Diagram |
+| State | Isolated states, no state machine | ✅ Diagram |
+| C4 | Unconnected containers | ✅ Diagram |
+| Gantt | Flat list of dates, no project structure | ✅ Diagram |
+
+#### Chart Types (Recharts — data-driven)
+
+| Type | Without visual encoding | Verdict |
+|------|------------------------|---------|
+| Line | Same {x,y} pairs, intact | ✅ Chart |
+| Bar | Same labeled values, intact | ✅ Chart |
+| Pie | Same proportions, intact | ✅ Chart |
+| Area | Same data points, intact | ✅ Chart |
+| Scatter | Same (x,y) pairs, intact | ✅ Chart |
+| Radar | Same axis values, intact | ✅ Chart |
+| Venn | Same set memberships, intact | ✅ Chart |
 
 ## When to Use Each Diagram Type
 
@@ -35,14 +78,13 @@ Generate PlantUML diagrams following OVES conventions established in
 | State transitions | State Diagram | `state`, `[*]` |
 | C4 model (Context, Container, Component) | C4 via stdlib | `!include <C4/C4_Context>` |
 | Project timelines, milestones, dependencies | Gantt Chart | `@startgantt` |
-| **Architecture ideas (default)** | **ArchiMate Diagram** | **This is the default** |
 
 **Rule of thumb:** Architecture → ArchiMate. Protocol/flow → Sequence Diagram.
-Infrastructure → Deployment Diagram. Don't overcomplicate — pick one type per idea.
+Infrastructure → Deployment Diagram. Process → Activity Diagram.
 
 ## OVES Conventions (from dirac-framework)
 
-Every PlantUML diagram in OVES repos MUST follow these conventions:
+Every PlantUML diagram in OVES repos MUST follow these conventions.
 
 ### Required Styling
 
@@ -93,20 +135,16 @@ footer ...
 
 - 2-space indentation
 - `' ===== SECTION =====` ASCII-art dividers between logical sections
-- `as ALIAS` after every entity name (enables cleaner relationship syntax)
+- `as ALIAS` after every entity name
 - `note right of` / `note top of` for annotations (use **bold** for keywords)
-- Color packages with hex codes matching OVES palette (#FAFAFA backgrounds, #E6F1FB for data, #E1F5EE for services, #F1EFE8 for external)
+- Color packages with hex codes matching OVES palette
 - Relationship arrows: `..>` for dependencies, `-->` for data flow, `..` for context
 - Title: `title **Bold text**` at top after `@startuml`
-- NEVER use labels with special characters without quoting them
 
 ## Rendering Pipeline: Intent → Scaffold → Embed
 
 The `.puml` file is the **intent artifact** (authoritative source). SVG conversion and
-embedding are handled by the scaffold process — the same pattern used by Recharts
-chart blocks in `oves-decks`.
-
-### Pipeline
+embedding are handled by the scaffold process.
 
 ```
 .puml file (intent)
@@ -119,40 +157,40 @@ chart blocks in `oves-decks`.
 
 Both `.puml` (source) and `.svg` (render) are committed together.
 Colleagues without VS Code open the `.svg` in any browser.
-Decks and scroll presentations reference the `.svg` at build time.
 
-### Viewing in WorkBuddy
+### Viewing
 
-For quick review: VS Code `Alt+D` with PlantUML extension.
-For sharing: distribute the `.svg` file or embed in HTML output.
+VS Code `Alt+D` with PlantUML extension.
 
-## Standard Process for Architecture Diagrams
+## Standard Process
 
-Given a natural language description of architecture:
-
-1. **Analyze the idea** — identify actors, boundaries, layers, dependencies
-2. **Choose diagram type** — ArchiMate is default for architecture
+1. **Analyze** — identify actors, boundaries, layers, dependencies
+2. **Choose type** — ArchiMate default for architecture
 3. **Write .puml** (intent artifact) to `docs/diagrams/<name>.puml`
-4. **Render .svg** via `java -jar plantuml.jar -tsvg` (scaffold step)
-5. **Commit both** `.puml` + `.svg` to repo
+4. **Render .svg** via `java -jar plantuml.jar -tsvg`
+5. **Commit both** `.puml` + `.svg`
 6. **Embed** in deck/scroll HTML output
 
 ## Quality Checklist
 
-Before considering a diagram complete, verify:
-
 - [ ] Follows OVES styling (theme, skinparams, footer)
 - [ ] Uses 2-space indent + ASCII section dividers
 - [ ] Every entity has `as ALIAS`
-- [ ] Every relationship has a label explaining what flows
+- [ ] Every relationship has a label
 - [ ] Notes explain WHY, not just WHAT
 - [ ] No more than 4 layers of nesting
-- [ ] Maximum ~12 components total (split into sub-diagrams if larger)
+- [ ] Maximum ~12 components total
 - [ ] Colors match OVES palette and are semantically meaningful
+
+## Follow-up: FlowDiagramBlock (#9)
+
+The `flow-diagram` block in oves-decks currently uses custom rendering.
+A process flow has dependencies — it fails the dependency test.
+Evaluate migrating `flow-diagram` to PlantUML Activity Diagram.
 
 ## References
 
-- [plantuml-diagram-types.md](references/plantuml-diagram-types.md) — Full diagram type reference
-- [dirac-framework-conventions.md](references/dirac-framework-conventions.md) — Detailed conventions from dirac-framework
+- [plantuml-diagram-types.md](references/plantuml-diagram-types.md) — Full type reference
+- [dirac-framework-conventions.md](references/dirac-framework-conventions.md) — Conventions from dirac-framework
 - PlantUML official: https://plantuml.com/
-- OVES PlantUML examples: `D:/github/dirac-framework/docs/diagrams/`
+- OVES examples: `D:/github/dirac-framework/docs/diagrams/`
