@@ -1,73 +1,76 @@
-@startuml WorkBuddy Extension Architecture
+@startuml WorkBuddy Extension Architecture (ArchiMate)
 
 ' ===== STYLING =====
 !theme plain
 skinparam backgroundColor #FAFAFA
 skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 13
-skinparam packageStyle rectangle
 skinparam shadowing false
-skinparam ArrowColor #555555
-skinparam ArrowThickness 1.5
-skinparam packageBackgroundColor #FAFAFA
-skinparam component {
-  BackgroundColor #FAFAFA
-  BorderColor #666666
-  FontColor #333333
-}
+skinparam roundcorner 25
+skinparam defaultTextAlignment center
 
-' ===== LAYER 1 =====
-package "WorkBuddy App" as App #White {
-  component "LLM + Agent Loop" as LLM
-}
+' ===== BUSINESS LAYER =====
+rectangle "LLM + Agent Loop" as LLM <<$archimate/business-process>> #Business
 
-' ===== LAYER 2 =====
-package "Skills (Context Injection)" as Skills #E6F1FB {
-  component "SKILL.md" as SkillMd
-  component "references/" as Refs
-  component "scripts/ (opt)" as Scripts
-}
+' ===== APPLICATION LAYER =====
+rectangle "Skill (SKILL.md)\ncontext injection" as SkillMd <<$archimate/application-component>> #Application
+rectangle "MCP Server\nstdio / HTTP" as McpServer <<$archimate/application-service>> #Application
+rectangle "Connector\npackaged MCP + auth" as Connector <<$archimate/application-service>> #Application
 
-' ===== LAYER 3 =====
-package "MCP Servers & Connectors" as MCP #E1F5EE {
-  component "MCP Server\n(stdio / HTTP)" as McpServer
-  component "Connector\n(packaged MCP + auth)" as Connector
-}
+' ===== TECHNOLOGY LAYER =====
+rectangle "GitHub\nREST + GraphQL" as GitHub <<$archimate/technology-device>> #Technology
+rectangle "Notion\nREST API" as Notion <<$archimate/technology-device>> #Technology
+rectangle "Odoo\nXML-RPC" as Odoo <<$archimate/technology-device>> #Technology
+rectangle "Cloudflare\nREST API" as CF <<$archimate/technology-device>> #Technology
 
-' ===== LAYER 4 =====
-package "External APIs" as APIs #F1EFE8 {
-  component "GitHub" as GitHub
-  component "Notion" as Notion
-  component "Odoo" as Odoo
-  component "Cloudflare" as CF
-}
+' ===== LAYER GROUPINGS =====
+rectangle "Skills" as SkillsGroup #Application
+rectangle "MCP & Connectors" as MCPGroup #Application
+rectangle "External APIs" as APIsGroup #Technology
 
-' ===== RELATIONSHIPS =====
-App ..> Skills : loads skill\ninjects context
-Skills ..> McpServer : triggers tools
-Skills ..> Connector : triggers tools
-McpServer ..> APIs : calls REST / GraphQL
-Connector ..> APIs : calls via packaged auth
+SkillMd -[hidden]right-> McpServer
+McpServer -[hidden]right-> Connector
+
+' ===== STRUCTURAL RELATIONSHIPS =====
+LLM -down-> SkillMd : triggers\n(loads into context)
+LLM -down-> McpServer : triggers\n(JSON-RPC 2.0)
+LLM -down-> Connector : triggers\n(managed auth)
+
+SkillMd -[hidden]down-> MCPGroup
+
+McpServer -down-> GitHub : calls
+McpServer -down-> Notion : calls
+McpServer -down-> Odoo : calls
+McpServer -down-> CF : calls
+
+Connector -down-> GitHub : calls via\npackaged auth
+Connector -down-> Notion : calls via\npackaged auth
+Connector -down-> Odoo : calls via\npackaged auth
+Connector -down-> CF : calls via\npackaged auth
 
 ' ===== ANNOTATIONS =====
 note right of SkillMd
-  **Skill = markdown instructions**
-  loaded into LLM context
-  stored at ~/.workbuddy/skills/<name>/
+  **Application Component**
+  Markdown instructions loaded
+  into LLM context window.
+  No code execution.
+  Stored at ~/.workbuddy/skills/
 end note
 
 note right of McpServer
-  **MCP = Model Context Protocol**
-  like LSP for IDEs
-  JSON-RPC 2.0 transport
-  any language (Node/Python/Go)
+  **Application Service**
+  Model Context Protocol
+  (like LSP for IDEs).
+  JSON-RPC 2.0 transport.
+  Any language.
 end note
 
 note right of Connector
-  **Connector = packaged MCP**
-  OAuth2 flow + credential refresh
-  managed by WorkBuddy host
-  no manual mcp.json editing
+  **Application Service**
+  Pre-packaged MCP server
+  with OAuth2 flow +
+  credential refresh.
+  Managed by WorkBuddy host.
 end note
 
 footer Omnivoltaic WorkBuddy | %filename() rendered with PlantUML version %version()

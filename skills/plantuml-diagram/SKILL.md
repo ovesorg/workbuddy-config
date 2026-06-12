@@ -5,6 +5,7 @@ triggers:
   - "plantuml"
   - "uml diagram"
   - "architecture diagram"
+  - "archimate"
   - "component diagram"
   - "sequence diagram"
   - "class diagram"
@@ -26,16 +27,16 @@ Generate PlantUML diagrams following OVES conventions established in
 
 | Need | Diagram Type | Syntax Keyword |
 |------|-------------|----------------|
-| System components + dependencies (architecture) | Component Diagram | `component`, `package` |
+| **Architecture (default)** | **ArchiMate Diagram** | `archimate`, layers: `#Business`, `#Application`, `#Technology`, `#Motivation`, `#Strategy`, `#Physical`, `#Implementation` |
 | Time-ordered interactions (API calls, protocols) | Sequence Diagram | `participant`, `->`, `-->` |
 | Infrastructure topology (nodes, containers) | Deployment Diagram | `node`, `artifact` |
 | Object-oriented class structure | Class Diagram | `class`, `interface` |
 | Workflows, business processes | Activity Diagram | `:step;`, `if`/`else` |
 | State transitions | State Diagram | `state`, `[*]` |
 | C4 model (Context, Container, Component) | C4 via stdlib | `!include <C4/C4_Context>` |
-| **Architecture ideas (default)** | **Component Diagram** | **This is the default** |
+| **Architecture ideas (default)** | **ArchiMate Diagram** | **This is the default** |
 
-**Rule of thumb:** Architecture → Component Diagram. Protocol/flow → Sequence Diagram.
+**Rule of thumb:** Architecture → ArchiMate. Protocol/flow → Sequence Diagram.
 Infrastructure → Deployment Diagram. Don't overcomplicate — pick one type per idea.
 
 ## OVES Conventions (from dirac-framework)
