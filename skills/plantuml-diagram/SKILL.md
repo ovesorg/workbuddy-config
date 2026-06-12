@@ -99,63 +99,31 @@ footer ...
 - Title: `title **Bold text**` at top after `@startuml`
 - NEVER use labels with special characters without quoting them
 
-## Rendering Workflow (One-Step in WorkBuddy)
+## Rendering Pipeline: Intent → Scaffold → Embed
 
-The agent handles everything. No user copy-paste needed.
+The `.puml` file is the **intent artifact** (authoritative source). SVG conversion and
+embedding are handled by the scaffold process — the same pattern used by Recharts
+chart blocks in `oves-decks`.
 
-### When User Requests a Diagram
+### Pipeline
 
 ```
-1. Write .puml to repo (e.g., docs/diagrams/<name>.puml)
-2. Encode .puml to PlantUML public server URL
-3. Open URL in WorkBuddy built-in browser via preview_url
-4. Summarize the diagram layers/relationships in text
+.puml file (intent)
+  → java -jar plantuml.jar -tsvg  (scaffold step)
+  → .svg output
+  → embedded in deck/scroll HTML via <img> or inline SVG
 ```
 
-**Encoding script** — run this Python to generate the SVG URL:
+### Commit Rule
 
-```python
-import zlib, string
+Both `.puml` (source) and `.svg` (render) are committed together.
+Colleagues without VS Code open the `.svg` in any browser.
+Decks and scroll presentations reference the `.svg` at build time.
 
-PMAP = string.digits + string.ascii_uppercase + string.ascii_lowercase + "-_"
-BASE64_TAIL = ["0", "00", "000"]
+### Viewing in WorkBuddy
 
-def encode6(b):
-    r = []
-    for c in b:
-        r.append(PMAP[c >> 2])
-        r.append(PMAP[((c & 3) << 4) | ((c << 4 & 0x3F) if len(b) > 1 else 0)])
-    return "".join(r) + BASE64_TAIL[len(b) % 3]
-
-def deflate_encode(text):
-    compressed = zlib.compress(text.encode("utf-8"))
-    return encode6(compressed[2:-4])
-
-text = open("PATH_TO_PUML", encoding="utf-8").read()
-encoded = deflate_encode(text)
-print(f"https://www.plantuml.com/plantuml/svg/{encoded}")
-```
-
-The agent runs this, captures the URL, and calls `preview_url(url=..., cwd=..., explanation="Show <diagram name>")`.
-
-### For Offline/VS Code Viewing
-
-User opens `.puml` in VS Code with PlantUML extension → `Alt+D`.
-
-### For Committing to Docs
-
-1. Render `.puml` → `.png` via `java -jar plantuml.jar docs/diagrams/<name>.puml`
-2. Reference in markdown: `![alt](path/<name>.png)`
-3. Commit BOTH `.puml` (source) and `.png` (render)
-
-### MkDocs Integration (future)
-
-```yaml
-markdown_extensions:
-  - plantuml_markdown
-```
-
-Requires `pip install plantuml-markdown` and a running PlantUML server.
+For quick review: VS Code `Alt+D` with PlantUML extension.
+For sharing: distribute the `.svg` file or embed in HTML output.
 
 ## Standard Process for Architecture Diagrams
 
@@ -163,10 +131,10 @@ Given a natural language description of architecture:
 
 1. **Analyze the idea** — identify actors, boundaries, layers, dependencies
 2. **Choose diagram type** — ArchiMate is default for architecture
-3. **Write .puml** — write to `D:/github/<repo>/docs/diagrams/<name>.puml`
-4. **Encode & render** — run the encoding script, call `preview_url` with the SVG URL
-5. **Summarize** — describe layers, relationships, key annotations in text
-6. **Commit** — `.puml` source + `.png` render (if user approves)
+3. **Write .puml** (intent artifact) to `docs/diagrams/<name>.puml`
+4. **Render .svg** via `java -jar plantuml.jar -tsvg` (scaffold step)
+5. **Commit both** `.puml` + `.svg` to repo
+6. **Embed** in deck/scroll HTML output
 
 ## Quality Checklist
 
