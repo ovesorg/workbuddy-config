@@ -99,36 +99,62 @@ footer ...
 - Title: `title **Bold text**` at top after `@startuml`
 - NEVER use labels with special characters without quoting them
 
-## Rendering Workflow
+## Rendering Workflow (One-Step in WorkBuddy)
 
-### Option A: Online Server (quick preview)
+The agent handles everything. No user copy-paste needed.
+
+### When User Requests a Diagram
 
 ```
-http://www.plantuml.com/plantuml/svg/ENCODED
+1. Write .puml to repo (e.g., docs/diagrams/<name>.puml)
+2. Encode .puml to PlantUML public server URL
+3. Open URL in WorkBuddy built-in browser via preview_url
+4. Summarize the diagram layers/relationships in text
 ```
 
-Encode the diagram text with PlantUML's encoder.
-Tell the user to paste code at: https://www.plantuml.com/plantuml/uml/
+**Encoding script** — run this Python to generate the SVG URL:
 
-### Option B: Save as .puml file (OVES standard)
+```python
+import zlib, string
 
-1. Write `.puml` to `docs/diagrams/<name>.puml`
-2. User renders to PNG via VS Code PlantUML extension or CLI:
-   ```
-   java -jar plantuml.jar docs/diagrams/<name>.puml
-   ```
-3. Reference in markdown: `![alt](path/to/<name>.png)`
-4. Commit BOTH `.puml` (source) and `.png` (render)
+PMAP = string.digits + string.ascii_uppercase + string.ascii_lowercase + "-_"
+BASE64_TAIL = ["0", "00", "000"]
 
-### Option C: MkDocs Integration (future)
+def encode6(b):
+    r = []
+    for c in b:
+        r.append(PMAP[c >> 2])
+        r.append(PMAP[((c & 3) << 4) | ((c << 4 & 0x3F) if len(b) > 1 else 0)])
+    return "".join(r) + BASE64_TAIL[len(b) % 3]
 
-Add to `mkdocs.yml`:
+def deflate_encode(text):
+    compressed = zlib.compress(text.encode("utf-8"))
+    return encode6(compressed[2:-4])
+
+text = open("PATH_TO_PUML", encoding="utf-8").read()
+encoded = deflate_encode(text)
+print(f"https://www.plantuml.com/plantuml/svg/{encoded}")
+```
+
+The agent runs this, captures the URL, and calls `preview_url(url=..., cwd=..., explanation="Show <diagram name>")`.
+
+### For Offline/VS Code Viewing
+
+User opens `.puml` in VS Code with PlantUML extension → `Alt+D`.
+
+### For Committing to Docs
+
+1. Render `.puml` → `.png` via `java -jar plantuml.jar docs/diagrams/<name>.puml`
+2. Reference in markdown: `![alt](path/<name>.png)`
+3. Commit BOTH `.puml` (source) and `.png` (render)
+
+### MkDocs Integration (future)
+
 ```yaml
 markdown_extensions:
   - plantuml_markdown
 ```
 
-Then diagrams can be written inline in markdown fenced blocks.
 Requires `pip install plantuml-markdown` and a running PlantUML server.
 
 ## Standard Process for Architecture Diagrams
@@ -136,12 +162,11 @@ Requires `pip install plantuml-markdown` and a running PlantUML server.
 Given a natural language description of architecture:
 
 1. **Analyze the idea** — identify actors, boundaries, layers, dependencies
-2. **Choose diagram type** — component diagram is default for architecture
-3. **Write structure** — start with `@startuml`, add styling, group into packages
-4. **Add relationships** — arrows between components showing dependencies
-5. **Annotate** — notes explaining key concepts, decisions, or constraints
-6. **Validate** — ensure every component has an alias, every relationship has a label
-7. **Output** — deliver both the PlantUML code block AND the plantuml.com preview URL
+2. **Choose diagram type** — ArchiMate is default for architecture
+3. **Write .puml** — write to `D:/github/<repo>/docs/diagrams/<name>.puml`
+4. **Encode & render** — run the encoding script, call `preview_url` with the SVG URL
+5. **Summarize** — describe layers, relationships, key annotations in text
+6. **Commit** — `.puml` source + `.png` render (if user approves)
 
 ## Quality Checklist
 
