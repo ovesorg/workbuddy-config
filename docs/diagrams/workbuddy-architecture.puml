@@ -1,4 +1,4 @@
-@startuml WorkBuddy Extension Architecture (ArchiMate)
+@startuml OVES WorkBuddy Architecture
 
 ' ===== STYLING =====
 !theme plain
@@ -9,68 +9,64 @@ skinparam shadowing false
 skinparam roundcorner 25
 skinparam defaultTextAlignment center
 
-' ===== BUSINESS LAYER =====
-rectangle "LLM + Agent Loop" as LLM <<$archimate/business-process>> #Business
+' ===== LAYER: AGENTIC GATEWAY =====
+rectangle "WorkBuddy\nAgentic Gateway" as WB <<$archimate/business-process>> #Business
 
-' ===== APPLICATION LAYER =====
-rectangle "Skill (SKILL.md)\ncontext injection" as SkillMd <<$archimate/application-component>> #Application
-rectangle "MCP Server\nstdio / HTTP" as McpServer <<$archimate/application-service>> #Application
-rectangle "Connector\npackaged MCP + auth" as Connector <<$archimate/application-service>> #Application
+' ===== LAYER: MCPs & CONNECTORS =====
+rectangle "Azure MCP\nTeams / OneDrive / SharePoint" as AzureMCP <<$archimate/application-service>> #Application
+rectangle "Odoo MCP\nCRM / MRP / Finance" as OdooMCP <<$archimate/application-service>> #Application
+rectangle "Docs MCP\nportal connector" as DocsMCP <<$archimate/application-service>> #Application
+rectangle "GitHub MCP\ncodebase connector" as GitHubMCP <<$archimate/application-service>> #Application
+rectangle "Cloudinary MCP\nmedia depot connector" as CloudinaryMCP <<$archimate/application-service>> #Application
 
-' ===== TECHNOLOGY LAYER =====
-rectangle "GitHub\nREST + GraphQL" as GitHub <<$archimate/technology-device>> #Technology
-rectangle "Notion\nREST API" as Notion <<$archimate/technology-device>> #Technology
-rectangle "Odoo\nXML-RPC" as Odoo <<$archimate/technology-device>> #Technology
-rectangle "Cloudflare\nREST API" as CF <<$archimate/technology-device>> #Technology
+' ===== LAYER: DATA SOURCES =====
+rectangle "MS Azure\nTeams / OneDrive / SharePoint" as Azure <<$archimate/technology-device>> #Technology
+rectangle "Odoo\nCRM / MRP / Finance" as Odoo <<$archimate/technology-device>> #Technology
+rectangle "docs.omnivoltaic.com\nGlobal Document Portal" as Docs <<$archimate/technology-device>> #Technology
+rectangle "GitHub\nAll Codebase Repos" as GitHub <<$archimate/technology-device>> #Technology
+rectangle "Cloudinary\nMedia Depot & Services" as Cloudinary <<$archimate/technology-device>> #Technology
 
-' ===== LAYER GROUPINGS =====
-rectangle "Skills" as SkillsGroup #Application
-rectangle "MCP & Connectors" as MCPGroup #Application
-rectangle "External APIs" as APIsGroup #Technology
+' ===== LAYER: INFRASTRUCTURE =====
+rectangle "AWS\nCloud Compute / PVC / K8s" as AWS <<$archimate/technology-device>> #Technology
+rectangle "Cloudflare\nCDN" as CF <<$archimate/technology-device>> #Technology
 
-SkillMd -[hidden]right-> McpServer
-McpServer -[hidden]right-> Connector
+' ===== GROUPINGS =====
+rectangle "MCPs & Connectors" as MCPGroup #Application
+rectangle "Data Sources & Systems" as DataGroup #Technology
+rectangle "Infrastructure" as InfraGroup #Technology
 
-' ===== STRUCTURAL RELATIONSHIPS =====
-LLM -down-> SkillMd : triggers\n(loads into context)
-LLM -down-> McpServer : triggers\n(JSON-RPC 2.0)
-LLM -down-> Connector : triggers\n(managed auth)
+' ===== RELATIONSHIPS: WB → MCPs =====
+WB -down-> AzureMCP
+WB -down-> OdooMCP
+WB -down-> DocsMCP
+WB -down-> GitHubMCP
+WB -down-> CloudinaryMCP
 
-SkillMd -[hidden]down-> MCPGroup
+' ===== RELATIONSHIPS: MCPs → Data Sources =====
+AzureMCP -down-> Azure
+OdooMCP -down-> Odoo
+DocsMCP -down-> Docs
+GitHubMCP -down-> GitHub
+CloudinaryMCP -down-> Cloudinary
 
-McpServer -down-> GitHub : calls
-McpServer -down-> Notion : calls
-McpServer -down-> Odoo : calls
-McpServer -down-> CF : calls
-
-Connector -down-> GitHub : calls via\npackaged auth
-Connector -down-> Notion : calls via\npackaged auth
-Connector -down-> Odoo : calls via\npackaged auth
-Connector -down-> CF : calls via\npackaged auth
+' ===== RELATIONSHIPS: Data Sources → Infrastructure =====
+Docs -down-> AWS
+Docs -down-> CF
+GitHub -down-> CF
 
 ' ===== ANNOTATIONS =====
-note right of SkillMd
-  **Application Component**
-  Markdown instructions loaded
-  into LLM context window.
-  No code execution.
-  Stored at ~/.workbuddy/skills/
+note right of WB
+  **Agentic Gateway**
+  Single coordination point
+  for all MCPs and skills.
+  Manages connector lifecycle.
 end note
 
-note right of McpServer
-  **Application Service**
-  Model Context Protocol
-  (like LSP for IDEs).
-  JSON-RPC 2.0 transport.
-  Any language.
-end note
-
-note right of Connector
-  **Application Service**
-  Pre-packaged MCP server
-  with OAuth2 flow +
-  credential refresh.
-  Managed by WorkBuddy host.
+note right of MCPGroup
+  Each MCP exposes tools
+  via Model Context Protocol.
+  Skills define workflows
+  combining multiple MCPs.
 end note
 
 footer Omnivoltaic WorkBuddy | %filename() rendered with PlantUML version %version()
