@@ -34,6 +34,7 @@ Generate PlantUML diagrams following OVES conventions established in
 | Workflows, business processes | Activity Diagram | `:step;`, `if`/`else` |
 | State transitions | State Diagram | `state`, `[*]` |
 | C4 model (Context, Container, Component) | C4 via stdlib | `!include <C4/C4_Context>` |
+| Project timelines, milestones, dependencies | Gantt Chart | `@startgantt` |
 | **Architecture ideas (default)** | **ArchiMate Diagram** | **This is the default** |
 
 **Rule of thumb:** Architecture → ArchiMate. Protocol/flow → Sequence Diagram.
