@@ -8,65 +8,80 @@ skinparam defaultFontSize 13
 skinparam shadowing false
 skinparam roundcorner 25
 skinparam defaultTextAlignment center
+skinparam WrapWidth 1400
 
-' ===== LAYER: AGENTIC GATEWAY =====
+' ===== LOCAL DESKTOP (PRIVATE) =====
 rectangle "WorkBuddy\nAgentic Gateway" as WB <<$archimate/business-process>> #Business
 
-' ===== LAYER: MCPs & CONNECTORS =====
-rectangle "Azure MCP\nTeams / OneDrive / SharePoint" as AzureMCP <<$archimate/application-service>> #Application
-rectangle "Odoo MCP\nCRM / MRP / Finance" as OdooMCP <<$archimate/application-service>> #Application
-rectangle "Docs MCP\nportal connector" as DocsMCP <<$archimate/application-service>> #Application
-rectangle "GitHub MCP\ncodebase connector" as GitHubMCP <<$archimate/application-service>> #Application
-rectangle "Cloudinary MCP\nmedia depot connector" as CloudinaryMCP <<$archimate/application-service>> #Application
+rectangle "Built-in WB Skills\n(context injection)" as WBSkills <<$archimate/application-component>> #Application
+rectangle "OpenClaw\nAgentic Automations" as OpenClaw <<$archimate/application-component>> #Application
 
-' ===== LAYER: DATA SOURCES =====
+rectangle "MCPs & Connectors\n(local process)" as MCPLayer <<$archimate/application-service>> #Application
+
+' ===== AUTH LAYER =====
+rectangle "MS Teams / Azure AD\n(per-user SSO & access control)" as AzureAD <<$archimate/technology-device>> #Motivation
+
+' ===== DATA SOURCES =====
 rectangle "MS Azure\nTeams / OneDrive / SharePoint" as Azure <<$archimate/technology-device>> #Technology
 rectangle "Odoo\nCRM / MRP / Finance" as Odoo <<$archimate/technology-device>> #Technology
 rectangle "docs.omnivoltaic.com\nGlobal Document Portal" as Docs <<$archimate/technology-device>> #Technology
-rectangle "GitHub\nAll Codebase Repos" as GitHub <<$archimate/technology-device>> #Technology
+rectangle "GitHub\nCode Repos + Shared Skills/Config" as GitHub <<$archimate/technology-device>> #Technology
 rectangle "Cloudinary\nMedia Depot & Services" as Cloudinary <<$archimate/technology-device>> #Technology
 
-' ===== LAYER: INFRASTRUCTURE =====
+' ===== INFRASTRUCTURE =====
 rectangle "AWS\nCloud Compute / PVC / K8s" as AWS <<$archimate/technology-device>> #Technology
 rectangle "Cloudflare\nCDN" as CF <<$archimate/technology-device>> #Technology
 
 ' ===== GROUPINGS =====
-rectangle "MCPs & Connectors" as MCPGroup #Application
+rectangle "Local Desktop (Private)" as LocalGroup #Application
 rectangle "Data Sources & Systems" as DataGroup #Technology
 rectangle "Infrastructure" as InfraGroup #Technology
 
-' ===== RELATIONSHIPS: WB → MCPs =====
-WB -down-> AzureMCP
-WB -down-> OdooMCP
-WB -down-> DocsMCP
-WB -down-> GitHubMCP
-WB -down-> CloudinaryMCP
+' ===== RELATIONSHIPS =====
+WB -right-> WBSkills
+WB -right-> OpenClaw
+WB -down-> MCPLayer
 
-' ===== RELATIONSHIPS: MCPs → Data Sources =====
-AzureMCP -down-> Azure
-OdooMCP -down-> Odoo
-DocsMCP -down-> Docs
-GitHubMCP -down-> GitHub
-CloudinaryMCP -down-> Cloudinary
+' Auth
+MCPLayer ..> AzureAD : authenticates via\n(not managed by WB)
 
-' ===== RELATIONSHIPS: Data Sources → Infrastructure =====
+' MCP → Data Sources
+MCPLayer -down-> Azure
+MCPLayer -down-> Odoo
+MCPLayer -down-> Docs
+MCPLayer -down-> GitHub
+MCPLayer -down-> Cloudinary
+
+' Skills shared via GitHub
+WBSkills ..> GitHub : shared via\nskills repo
+
+' Data → Infrastructure
 Docs -down-> AWS
 Docs -down-> CF
 GitHub -down-> CF
 
 ' ===== ANNOTATIONS =====
 note right of WB
-  **Agentic Gateway**
-  Single coordination point
-  for all MCPs and skills.
-  Manages connector lifecycle.
+  **Pure local desktop app**
+  Does NOT manage access control.
+  Each user brings their own
+  Azure AD credentials.
+  Skills shared via GitHub.
 end note
 
-note right of MCPGroup
-  Each MCP exposes tools
-  via Model Context Protocol.
-  Skills define workflows
-  combining multiple MCPs.
+note right of AzureAD
+  **SSO boundary**
+  Each user authenticates
+  individually. WB passes
+  existing credentials;
+  never stores them.
+end note
+
+note right of GitHub
+  **Shared config hub**
+  Skills, MCP templates,
+  and configs persisted
+  in workbuddy-config repo.
 end note
 
 footer Omnivoltaic WorkBuddy | %filename() rendered with PlantUML version %version()
