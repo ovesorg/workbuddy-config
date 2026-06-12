@@ -1,0 +1,75 @@
+@startuml WorkBuddy Extension Architecture
+
+' ===== STYLING =====
+!theme plain
+skinparam backgroundColor #FAFAFA
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam ArrowColor #555555
+skinparam ArrowThickness 1.5
+skinparam packageBackgroundColor #FAFAFA
+skinparam component {
+  BackgroundColor #FAFAFA
+  BorderColor #666666
+  FontColor #333333
+}
+
+' ===== LAYER 1 =====
+package "WorkBuddy App" as App #White {
+  component "LLM + Agent Loop" as LLM
+}
+
+' ===== LAYER 2 =====
+package "Skills (Context Injection)" as Skills #E6F1FB {
+  component "SKILL.md" as SkillMd
+  component "references/" as Refs
+  component "scripts/ (opt)" as Scripts
+}
+
+' ===== LAYER 3 =====
+package "MCP Servers & Connectors" as MCP #E1F5EE {
+  component "MCP Server\n(stdio / HTTP)" as McpServer
+  component "Connector\n(packaged MCP + auth)" as Connector
+}
+
+' ===== LAYER 4 =====
+package "External APIs" as APIs #F1EFE8 {
+  component "GitHub" as GitHub
+  component "Notion" as Notion
+  component "Odoo" as Odoo
+  component "Cloudflare" as CF
+}
+
+' ===== RELATIONSHIPS =====
+App ..> Skills : loads skill\ninjects context
+Skills ..> McpServer : triggers tools
+Skills ..> Connector : triggers tools
+McpServer ..> APIs : calls REST / GraphQL
+Connector ..> APIs : calls via packaged auth
+
+' ===== ANNOTATIONS =====
+note right of SkillMd
+  **Skill = markdown instructions**
+  loaded into LLM context
+  stored at ~/.workbuddy/skills/<name>/
+end note
+
+note right of McpServer
+  **MCP = Model Context Protocol**
+  like LSP for IDEs
+  JSON-RPC 2.0 transport
+  any language (Node/Python/Go)
+end note
+
+note right of Connector
+  **Connector = packaged MCP**
+  OAuth2 flow + credential refresh
+  managed by WorkBuddy host
+  no manual mcp.json editing
+end note
+
+footer Omnivoltaic WorkBuddy | %filename() rendered with PlantUML version %version()
+
+@enduml

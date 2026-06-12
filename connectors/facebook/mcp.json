@@ -1,7 +1,8 @@
 {
   "mcpServers": {
     "facebook": {
-      "command": "C:/Users/Huashan_Wang/.workbuddy/binaries/python/versions/3.13.12/Scripts/facebook-mcp-server.exe",
+      "command": "python",
+      "args": ["-m", "facebook_mcp_server"],
       "timeout": 600,
       "env": {
         "FACEBOOK_ACCESS_TOKEN": "${FACEBOOK_ACCESS_TOKEN}",
