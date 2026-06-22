@@ -10,6 +10,7 @@
 # Local overrides (team members fill in their own)
 mcp.local.json
 connectors/*/mcp.local.json
+models.json
 
 # MkDocs build output
 site/
